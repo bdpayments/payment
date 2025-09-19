@@ -9,7 +9,7 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Serif+Bengali:wght@400;500;600;700&display=swap');
         body {
             font-family: 'Noto Serif Bengali', 'Inter', sans-serif;
-            background: linear-gradient(to right,#FFA500, #FF0000, #FFA500);
+            background: linear-gradient(to right, #8A2BE2, #9370DB);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -62,7 +62,7 @@
 
             <div>
                 <label for="amount" class="block text-gray-700 font-medium mb-2">টাকার পরিমাণ (BDT)</label>
-                <input type="number" id="amount" name="টাকার পরিমাণ (BDT) (Amount in BDT)" placeholder="যেমন: 500" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                <input type="number" id="amount" name="amount" placeholder="যেমন: 500" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
             </div>
 
             <div>
@@ -131,24 +131,24 @@
         const copyButton = document.getElementById('copy-button');
         const ACCOUNT_NUMBER = '01919129121';
 
-        // --- নতুন কোড এখানে যোগ করা হয়েছে ---
         // Function to get a URL parameter by name
         function getUrlParameter(name) {
-            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-            var results = regex.exec(location.search);
-            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+            name = name.replace(/[\[\]]/g, '\\$&');
+            var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)');
+            var results = regex.exec(window.location.href);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, ' '));
         }
 
         // Get the 'amount' parameter from the URL
-        const amountFromUrl = getUrlParameter('টাকার পরিমাণ (BDT) (Amount in BDT)');
+        const amountFromUrl = getUrlParameter('amount');
         const amountInput = document.getElementById('amount');
 
         // If the amount parameter exists, set the input field value
-        if (amountFromUrl) {
+        if (amountFromUrl !== null) {
             amountInput.value = amountFromUrl;
         }
-        // --- নতুন কোড সমাপ্ত ---
 
         // Function to show the modal with a specific message
         function showModal(title, message) {
